@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>LeanEngine</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+  </head>
+  <body>
+    <button id="button">123</button>
+    <script>
+    var roomId,ss2;
+var ss= new WebSocket('ws://localhost:3000/wss2/enter?userId=123&userName=123&avatar=123&create=true&categoryId=123', 'echo-protocol');
+      // Connection opened
+ss.addEventListener('open', function (event) {
+  console.log(event.data)
+  
+});
+
+// Listen for messages
+ss.addEventListener('message', function (event) {
+	
+  console.log(event.data)
+  var msg = JSON.parse(event.data);
+  if(msg.type=='enter_room'){
+    ss.send(JSON.stringify({type:'ready',roomId:msg.roomId,userId:123}))
+  }
+
+});
+var ss2= new WebSocket('ws://localhost:3000/wss2/enter?userId=1234&userName=123&avatar=123&create=true&categoryId=123', 'echo-protocol');
+    </script>
+
+  </body>
+</html>
