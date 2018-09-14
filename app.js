@@ -41,6 +41,7 @@ app.get('/', function(req, res) {
 
 app.use('/wss', require('./routes/wss'));
 app.use('/wss2', require('./routes/wss2'));
+app.use('/wss3', require('./routes/wss3'));
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
   if (!res.headersSent) {

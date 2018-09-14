@@ -8,7 +8,7 @@ const state = require('./state');
 const {notEmpty,send,broadcast,parseMsg,leave,setHost} = tools;
 
 router.ws('/enter', (ws, req, res) => {
-  const { userId,  categoryId, userName, avatar,create } = req.query;
+  const { userId, userName, avatar } = req.query;
   let roomId=init(ws,req,res);
   if(roomId){
     ws.on('message', (msg) => {
@@ -21,9 +21,9 @@ router.ws('/enter', (ws, req, res) => {
   }
 })
 function init(ws, req, res){
-  const { userId,  categoryId, userName, avatar,create } = req.query;
+  const { userId, userName, avatar,create } = req.query;
   let {roomId} = req.query;
-  const error = notEmpty(userId, roomId, categoryId, userName, avatar);
+  const error = notEmpty({userId, userName, avatar});
   if(error){
     send(ws,error);
     return;
