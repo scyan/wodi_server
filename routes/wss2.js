@@ -23,7 +23,7 @@ router.ws('/enter', (ws, req, res) => {
 function init(ws, req, res){
   const { userId, userName, avatar,create } = req.query;
   let {roomId} = req.query;
-  const error = notEmpty({userId, userName, avatar});
+  const error = notEmpty({userId, roomId, userName, avatar});
   if(error){
     send(ws,error);
     return;

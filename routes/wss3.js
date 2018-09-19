@@ -1,21 +1,29 @@
 const router = require('express').Router();
 const Room = require('./room.js');
+const rooms = require('./rooms');
+
 router.ws('/enter', (ws, req, res) => {
-  const { userId, userName, avatar } = req.query;
-  
-  	try{
-  		new Room(ws,req.query);
-  		console.log('???')
+  const { roomId, userId } = req.query;
+
+  	try {
+  		let room;
+  		if (!userId) {
+  			throw {};
+  		}
+  		if (roomId) {
+        room = rooms.getRoom(roomId);
+        room.enter(req.query);
+  		} else {
+	  	  room = new Room(ws, req.query);
+  		}
 	    ws.on('message', (msg) => {
-	    	// parseMsg({userId, roomId, msg,ws});
+	    	room.getMsg({ userId, msg, ws });
 	    });
 	    ws.on('close', (msg) => {
-	    	// 链接断开后，该用户从
-	    	// leave({userId, roomId});
+        room.leave({userId});
 	    });
-  	}catch(e){
-  		console.log(e)
+  	} catch (e) {
+  		console.log(e);
   	}
-  
-})
+});
 module.exports = router;
