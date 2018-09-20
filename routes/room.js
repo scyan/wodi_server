@@ -30,16 +30,19 @@ class Room {
   	  this.ready(userId);
 	  return;
   	}
+  	if(result.type==='speak'){
+  	  this.speak(userId,result.cdnPath);
+  	}
   }
   ready(userId){
   	let readyCount = 0;
   	this.userList.map((item)=>{
 
   	  if(item.userInfo.userId==userId){
-  	  	item.userInfo.status = 'ready';
+  	  	item.userInfo.ready = true;
   	  }
 
-  	  if(item.userInfo.status=='ready'){
+  	  if(item.userInfo.ready){
   	  	readyCount = 1;
   	  }
   	})
@@ -69,8 +72,9 @@ class Room {
   	})
   	this.broadcast({type: 'game_start',userList:this.getUserInfoList()})
   }
+  //通知发言
   speakQueue(){
-  	//speak分为0，1，2三种状态，0为发言，1正在发言，2已经发言
+  	//speak分为0，1，2三种状态，0为发言，1轮到发言，2已经发言
   	this.userList.some((item)=>{
 
   	  if(!item.userInfo.speak){
@@ -80,6 +84,17 @@ class Room {
   	})
   	this.broadcast({type: 'can_speak',userList:this.getUserInfoList()})
   }
+  //广播某人的发言消息
+  speak(userId,cdnPath){
+  	this.userList.some((item)=>{
+  	  if(item.userInfo.userId==userId){
+  	  	item.userInfo.audio = cdnPath
+  	  	return;
+  	  }
+  	})
+  	this.broadcast({type: 'change_userList',userList:this.getUserInfoList()})
+  }
+
   //取词
   getWords(){
   	let words = []
