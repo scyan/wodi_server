@@ -86,6 +86,8 @@ class Room {
   }
   //广播某人的发言消息
   speak(userId,cdnPath){
+  	console.log(userId,cdnPath);
+
   	this.userList.some((item)=>{
   	  if(item.userInfo.userId==userId){
   	  	item.userInfo.audio = cdnPath
