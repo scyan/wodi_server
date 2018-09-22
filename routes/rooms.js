@@ -1,10 +1,16 @@
-const rooms={
-	rooms:{},
-	addRoom:(roomId,room)=>{
-	  this.rooms[roomId] = room;
-	},
-	getRoom:(roomId)=>{
+class Rooms{
+	constructor(){
+		this.rooms={}
+	}
+	addRoom(room){
+		this.rooms[room.roomId] = room;
+	}
+	deleteRoom(roomId){
+		delete this.rooms[roomId];
+	}
+	getRoom(roomId){
 		return this.rooms[roomId]
 	}
-};
-module.exports = rooms;
+}
+
+module.exports = new Rooms();
