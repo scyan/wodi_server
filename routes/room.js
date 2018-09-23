@@ -50,7 +50,7 @@ class Room {
   	  this.vote(userId,result.toUserId);
   	}
   	if(result.type=='get_new_round'){//获取新一轮用户数据
-  	  this.send(ws,{type:'get_new_round',userList:this.getUserInfoList(),host:this.host})
+  	  this.send(ws,{type:'get_new_round',userList:this.getUserInfoList(),host:this.host,roomId:this.roomId})
   	}
   	if(result.type=='change_word'){
   	  this.filter(['userId','userName','avatar','ready'])
@@ -315,7 +315,7 @@ class Room {
   	return list;
   }
   broadcast(msg){
-  	Object.assign(msg,{host:this.host});
+  	Object.assign(msg,{host:this.host,roomId:this.roomId});
   	this.userList.map((item)=>{
   	  this.send(item.ws,msg);
   	})
