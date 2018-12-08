@@ -29,7 +29,7 @@ class Room {
   	this.userList.some((item)=>{
   	  Object.keys(item.userInfo).map((key)=>{
   	  	if(keyArray.indexOf(key)<0){
-  	  	  delete item.userInfo(key)
+  	  	  delete item.userInfo[key]
   	  	}
   	  })
   	})
@@ -56,6 +56,7 @@ class Room {
   	  this.filter(['userId','userName','avatar','ready'])
   	  this.startGame();
   	  this.broadcast({type:'change_word',userList:this.getUserInfoList()})
+      this.canSpeak(true);
   	}
   }
   ready(userId){
