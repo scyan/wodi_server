@@ -4,7 +4,7 @@ const rooms = require('./rooms');
 
 router.ws('/enter', (ws, req, res) => {
   const { roomId, userId } = req.query;
-
+    
   	try {
   		let room;
   		if (!userId) {
@@ -15,8 +15,9 @@ router.ws('/enter', (ws, req, res) => {
 
         //检测房间是否还在存在，不存在则以原来的roomId创建房间
         if(room){
-          room.enter(req.query);
+          room.enter(ws,req.query);
         }else{
+          
           room = new Room(ws, Object.assign(req.query,{roomId}));
           rooms.addRoom(room);
         }
@@ -29,6 +30,7 @@ router.ws('/enter', (ws, req, res) => {
 	    	room.getMsg({ userId, msg, ws });
 	    });
 	    ws.on('close', (msg) => {
+        console.log('close')
         room.leave({userId},(noBody)=>{
           if(noBody){
             rooms.deleteRoom(roomId);

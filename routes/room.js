@@ -261,36 +261,46 @@ class Room {
 	}
 	return count;
   }
+
+  removeUser(userId){
+    let leaveIndex = 0;
+    //如果房间里只有一个人，直接删除
+    if(this.userList.length==1){
+      this.userList = []
+      return ;
+    }
+    this.userList.some((item)=>{
+      if(item.userInfo.userId ==userId){
+        leaveIndex = 1;
+        return true
+      }
+    })
+    this.userList.splice(leaveIndex,1)
+  }
+  //选定新房主
+  newHost(){
+    if(this.userList.length){
+      this.host = this.userList[0].userInfo.userId
+    }
+  }
   leave(config,cb){
-  	const {userId} = config;
-  	if(userId==this.host){//房主离开，寻找新房主
-  	  let findNewHost = false;
-  	  this.userList.some((item,i)=>{
-  	  	if(!item.leave && item.userInfo.userId!=userId){
-  	  	  this.host = item.userInfo.userId;
-  	  	  findNewHost = true;
-  	  	  return true;
-  	  	}
-  	  })
-  	  //所有人都离开的情况
-  	  if(!findNewHost){
-  	  	cb && cb(true);
-  	  	return;
-  	  }
-  	}
-  	this.userList.some((item,i)=>{
-  	  if(item.userInfo.userId==userId){
-  	  	if(this.start){//游戏正在进行
-  	  	  item.userInfo.dead=true;
-  	  	  item.userInfo.leave = true;
-  	  	  this.ifGameOver(true);
-  	  	}else{
-  	  	  this.userList.splice(i,1);
-  		  this.broadcast({type:'change_userList',userList:this.getUserInfoList()});  			
-  	  	}
-  	  	return true
-  	  }
-  	})
+    const {userId} = config;
+    this.removeUser(userId);
+    if(!this.userList.length){
+      cb && cb(true)
+      return;
+    }
+    if(userId==this.host){
+      this.newHost()
+    }
+    //如果游戏正在进行中，判断游戏是否结束或者继续
+    if(this.start){
+
+      this.ifGameOver(true);
+    }else{
+      //直接广播新的userList
+      this.broadcast({type:'change_userList',userList:this.getUserInfoList()});       
+    }
   	
   }
   enter(ws,config){
