@@ -113,7 +113,7 @@ class Room {
   	  	return true;
   	  }
   	})
-  	this.broadcast({type: 'can_speak',userList:this.getUserInfoList(),notFirst:true})
+  	this.broadcast({type: 'can_speak',userList:this.getUserInfoList()})
   }
   //广播某人的发言消息
   speak(userId,audioPath){
