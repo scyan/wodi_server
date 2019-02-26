@@ -315,7 +315,7 @@ class Room {
 	  ws,
 	  userInfo:{userId,userName,avatar}
   	});
-
+    this.send(ws,{type:'get_userid',userId})
   	this.broadcast({type:'change_userList',userList:this.getUserInfoList()});
   }
   getUserInfoList(){

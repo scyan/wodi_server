@@ -16,7 +16,8 @@
     "express": "4.12.3",
     "express-ws": "^4.0.0",
     "leancloud-storage": "^3.0.0",
-    "leanengine": "^3.0.0"
+    "leanengine": "^3.0.0",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
